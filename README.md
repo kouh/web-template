@@ -1,2 +1,9 @@
 # web-template
-web-template project 
+
+gulpを使ったweb開発用テンプレートプロジェクト。
+
+機能
+- es6
+- sass
+- autoprefixer
+- minimize
