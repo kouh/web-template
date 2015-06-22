@@ -94,8 +94,9 @@ gulp.task('watch', function() {
 
 gulp.task('build', ['clean'], function(cb) {
   runSequence(
-    'styles',
-    ['eslint', 'html', 'scripts', 'images', 'fonts'],
+    'styles', 
+    'scripts',
+    ['eslint', 'html', 'images', 'fonts'],
     cb
   );
 });
