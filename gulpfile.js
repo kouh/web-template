@@ -79,7 +79,7 @@ gulp.task('html', function() {
 
 gulp.task('clean', function(){ del(['.tmp', 'dist/*', '!dist/.git'], {dot: true})});
 
-gulp.task('watch', function() {
+gulp.task('watch',['styles', 'scripts'], function() {
   browserSync({
     notify: false,
     https: false,
