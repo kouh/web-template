@@ -59,7 +59,7 @@ gulp.task('styles', function() {
 
 gulp.task('scripts', function() {
   return gulp.src(['app/scripts/**/*.js'])
-    .pipe($.babel())
+    .pipe($.babel().on('error', console.error.bind(console)))
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe($.uglify({preserveComments: 'some'}))
     .pipe(gulp.dest('dist/scripts'));
