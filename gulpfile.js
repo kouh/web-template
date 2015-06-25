@@ -42,24 +42,26 @@ gulp.task('fonts', function() {
 gulp.task('styles', function() {
 
   return gulp.src([
-    'app/**/*.scss',
+    'app/styles/**/*.scss',
     'app/styles/**/*.css'
   ])
-    .pipe($.changed('.tmp/styles', {extension: '.css'}))
+    .pipe($.plumber())
+    // .pipe($.changed('.tmp/styles', {extension: '.css'}))
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      precision: 3
-    }).on('error', $.sass.logError))
+    .pipe($.sass.sync({
+      precision: 3,
+    }))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp'))
+    .pipe(gulp.dest('.tmp/styles'))
     .pipe($.if('*.css', $.minifyCss()))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/styles'));
 });
 
 gulp.task('scripts', function() {
   return gulp.src(['app/scripts/**/*.js'])
-    .pipe($.babel().on('error', console.error.bind(console)))
+    .pipe($.plumber())
+    .pipe($.babel())
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe($.uglify({preserveComments: 'some'}))
     .pipe(gulp.dest('dist/scripts'));
