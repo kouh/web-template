@@ -52,19 +52,19 @@ gulp.task('styles', function() {
       precision: 3,
     }))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp/styles'))
-    .pipe($.if('*.css', $.minifyCss()))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('dist/styles'));
+    .pipe($.if(browserSync.active, gulp.dest('.tmp/styles')))
+    .pipe($.if(!browserSync.active, $.minifyCss()))
+    .pipe($.if(!browserSync.active, gulp.dest('dist/styles')));
 });
 
 gulp.task('scripts', function() {
   return gulp.src(['app/scripts/**/*.js'])
     .pipe($.plumber())
     .pipe($.babel())
-    .pipe(gulp.dest('.tmp/scripts'))
-    .pipe($.uglify({preserveComments: 'some'}))
-    .pipe(gulp.dest('dist/scripts'));
+    .pipe($.if(browserSync.active, gulp.dest('.tmp/scripts')))
+    .pipe($.if(!browserSync.active, $.uglify({preserveComments: 'some'})))
+    .pipe($.if(!browserSync.active, gulp.dest('dist/scripts')));
 });
 
 gulp.task('html', function() {
@@ -79,7 +79,12 @@ gulp.task('html', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('clean', function(){ del(['.tmp', 'dist/*', '!dist/.git'], {dot: true})});
+gulp.task('clean', function(){ 
+  del.sync(
+    ['.tmp', 'dist/*', '!dist/.git'],
+    {dot: true}
+  );
+});
 
 gulp.task('watch',['styles', 'scripts'], function() {
   browserSync({
